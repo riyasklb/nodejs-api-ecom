@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 const users = require('./model/authmodel');
-const PORT = process.env.PORT;
+const PORT = process.env.PORT||3000;
 
 const mongoose = require('mongoose');
 
@@ -38,14 +38,14 @@ app.get('/users', async (req, res) => {
   }
 });
 
-app.post('/register',async (req, res) => {
+app.post('/register', async (req, res) => {
   try {
     const user = await users.create(req.body);
 
-    
-    
+
+
     res.status(201).send(user)
-   
+
   } catch (error) {
     res.status(500).send
     console.log(error)
@@ -53,10 +53,10 @@ app.post('/register',async (req, res) => {
 
 },);
 
-app.post('/login', (req, res) => {
-  const user = users.find(user => user.name == req.body.name)
+app.post('/login',async (req, res) => {
+  const user = await users.findOne({ name: req.body.name });
 
-  if (user == null) {
+  if (!user) {
     return res.status(400).send("cannot find user")
   }
   try {
