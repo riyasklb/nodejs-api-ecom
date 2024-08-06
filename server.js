@@ -61,10 +61,10 @@ app.post('/login',async (req, res) => {
   }
   try {
     if (req.body.password == user.password && user.name == req.body.name) {
-      res.status(201).send('success')
+      res.status(200).send('success')
       res.json(users)
     } else {
-      res.send('not allowed')
+      res.status(404).send('not allowed')
     }
 
 
